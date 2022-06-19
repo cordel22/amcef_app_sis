@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Blog</title>
+    </head>
+    <body>
+      <div>
+        <a href="logout">Log Out Nigga!</a>
+      </div>
+      <div>
+        <h1>
+          Welcome {{user["name"]}}, your email is {{user["email"]}}
+        </h1>
+        <div>
+          checkitty check 
+          responsa = [ { "user_id": user_id },
+               { "id": id },
+               { "title": title },
+               {"body": body } ]
+
+               sO let me see like 
+
+               responsa[2]["title"] ty si ale jebnuty
+               responsa[2]["title"]
+               <p>The forum posts in our DB are as follows:</p>
+               <table border="1">
+                 <tr>
+                     <th>user_id</th>
+                     <th>id</th>
+                     <th>title</th>
+                     <th>body</th>
+                     <th>date</th>
+                 </tr>
+               % # print({{forum}})
+                   % for i in range(len(rows)):
+                   <tr>
+                     <td>{{rows[i]["user_id"]}}</td>
+                     <td>{{rows[i]["id"]}}</td>
+                     <td>{{rows[i]["title"]}}</td>
+                   
+                     <td>{{rows[i]["body"]}}</td>
+                     <td>{{rows[i]["date"]}}</td>
+                   % end
+                 </tr>
+               %end
+               </table>
+
+        </div>
+      </div>
+    </body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Blog</title>
+    </head>
+    <body>
+      <div>
+        <a href="logout">Log Out Nigga!</a>
+      </div>
+
+      % if False:
+    <h1>If Block!</h1>
+% else:
+    <h1>Else Block</h1>
+% end
+
+% for i in  range(10):
+    <p>This is loop index: {{ i }}</p>
+% end
+
+
+%   print(apiArray)
+<div>
+apiArray = {{apiArray}}
+</div>
+<div>
+este = {{este}}
+</div>
+
+<div>
+  <h3>Forum</h3>
+  <table>
+    <tr>
+      <th>user_id</th>
+      <th>id</th>
+      <th>title</th>
+      <th>body</th>
+      <th>date</th>
+    </tr>
+    % # print({{forum}})
+    % for i in range(100):
+    <tr>
+      <td>{{forum[i]["userId"]}}</td>
+      <td>{{forum[i]["id"]}}</td>
+      <td>{{forum[i]["title"]}}</td>
+    
+      <td>{{forum[i]["body"]}}</td>
+      
+    % end  
+    </tr>
+  </table>
+  
+  %   '''print(user_id = res[0]["userId"],
+  % id = res[0]["id"],
+  % title = res[0]["title"],
+  % body = res[0]["body"]
+  % )'''
+
+
+
+</div>
+
+
+    </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Login</title>
+    </head>
+    <body>
+      <form action="/login" method="POST">
+        <input name="user_email" type="text" placeholder="email">
+        <input name="user_password" type="text" placeholder="name"> <!--  embedded users log in with password!!!  -->
+        <button>Log In</button>
+      </form>
+
+      %#template to generate a HTML table from a list of tuples (or list of lists, or tuple of tuples or ...)
+      
+      
+<p>Choose an identity from the server and look at the posts:</p>
+<table border="1">
+  <tr>
+      <th>user email</th>
+      <th>user name</th>
+  </tr>
+    % for i in range(len(res)):
+    <tr>
+      <td>{{res[i]["email"]}}</td>
+      <td>{{res[i]["name"]}}</td>
+    % end
+    </tr>
+  %end
+</table>
+      
+    </body>
+</html>
