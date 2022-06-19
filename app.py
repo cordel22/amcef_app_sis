@@ -18,10 +18,6 @@ from sys import api_version
 #   https://stackoverflow.com/questions/52461587/basic-auth-authentication-in-bottle
 import uuid
 
-from bottle import auth_basic                   #   TODO: remove !!!
-
-from bottle import abort                        #   TODO: remove !!!
-
 ##############     model       ###############
 
 ######### endpoints for the restful api ######
@@ -30,7 +26,6 @@ endpoint2 = 'posts'
 #########   url of the restful api  ##########
 url = "https://jsonplaceholder.typicode.com/"
 ##########  response variable array   ########
-# res = []                                         # remove it, defined later
 
 ##########       dummy users          ########
 
@@ -82,10 +77,8 @@ def add_post(user_id, id, title, body):
 def show_all():
     result = []
     for s in session.query(db.Posts).all():
-      # print("\nuser_id : ", s.user_id, "\nid : ", s.id, "\ntitle : ", s.title, "\nbody : ", s.body, "\ndate : ", s.date)
+
       result.append({"user_id" : s.user_id, "id" :  s.id, "title" : s.title, "body" : s.body, "date" : s.date})     #   TypeError('Object of type datetime is not JSON serializable')
-      # result.append({"user_id" : s.user_id, "id" :  s.id, "title" : s.title, "body" : s.body})
-      # print(result)   ti vyhodi na stranku, ne do konzoly
     return result
 
     
@@ -93,14 +86,14 @@ def show_all():
 def show_by_user(userId):
     result = []
     for t in session.query(db.Posts).filter(db.Posts.user_id==userId):
-      # print("\nuser_id : ", t.user_id, "\nid : ", t.id, "\ntitle : ", t.title, "\nbody : ", t.body, "\ndate : ", t.date)
+
       result = {"user_id" : t.user_id, "id" :  t.id, "title" : t.title, "body" : t.body, "date" : t.date}
     return result
 
 ##########   query database by post id #########
 def show_by_id(id):
     for u in session.query(db.Posts).filter(db.Posts.id==id):
-      # print("\nuser_id : ", u.user_id, "\nid : ", u.id, "\ntitle : ", u.title, "\nbody : ", u.body, "\ndate : ", u.date)
+
       result = {"user_id" : u.user_id, "id" :  u.id, "title" : u.title, "body" : u.body, "date" : u.date}
     return result
 
@@ -115,8 +108,6 @@ def edit_body(ident, newBody):
 
 ###########   delete by id      ##########
 def delete_by_id(identif):
-  # session.query(db.Posts).filter(db.Posts.id == identif)
-  # session.delete()
   session.query(db.Posts).filter(db.Posts.id == identif).delete()
   session.commit()
 ############     delete all     ########### 
@@ -161,8 +152,6 @@ if len(show_all()) < 1:
       )
 
 
-
-
 ##############################################
 ############        view          ############
 
@@ -175,14 +164,6 @@ def _():
   return
 
 
-########### login works, logout 401 ##########      #   TODO: remove !!!
-'''
-@route('/')
-@auth_basic(is_authenticated_user)
-def home():
-    # return ['hooray, you are authenticated! your info is: {}'.format(request.auth)]
-    return redirect("/forum")                       #   TODO: remove !!!
-'''
 #########           login          ###########
 
 @get("/login")
@@ -204,8 +185,7 @@ def _():
 
 ######    testing for embedded users    ######
   for user in users:
-    '''if user_email == "admin@admin" and user_password == "1111":    #   TODO: remove !!!
-      return redirect("/admin")'''
+
     if user_email == user["email"] and user_password == user["password"]:
       user_session_id = str(uuid.uuid4())
       sessions[user_session_id] =  user # maybe without password
@@ -248,34 +228,9 @@ def _():
 
 
 
-########    dunno how to logout of auth ########              #   TODO: remove !!!
-########     so we just smsh it!!!      ########
-'''     
-@route('/logout', method=["GET", "POST"])
-def logout():
-    abort(401, "You're no longer logged in")
-'''                                                           #   TODO: remove !!!
-#########  blog   ###########               # TODO: odstran!
-
-@get("/blog")
-@view("blog")
-def _():
-  response.set_header("Cache-Control", "no-cache, no-store, must-revalidate")
-  user_session_id = request.get_cookie("user_session_id")
-  if user_session_id not in sessions:
-    return redirect("/login")
-  user = sessions[user_session_id]
-  return dict(user=user)                  #   TODO: remove !!!
-
 
 #########  admin   ###########
 ####  accesses everything ####
-'''  #  miscellaneous, vymaz!             #   TODO: remove !!!
-@get("/admin")
-@view("admin")
-def _():
-  return
-'''                                       #   TODO: remove !!!
 
 @route('/admin')
 def admin():
@@ -286,7 +241,7 @@ def admin():
 
     #     miscellaneous   ###
     ####  see if user in session has admin attribute  ###
-    # if hasattr(sessions[user_session_id], "address"):
+    
     if 'address' in sessions[user_session_id]:
     ###   see if admin attribute is eual to zero
       # if sessions[user_session_id]["admin"] == "0":
@@ -296,18 +251,7 @@ def admin():
     
     #     miscellaneous   ###
     #########   redirected to forum a if not logged in, forum will redrect to login back
-    #   nice try, tiez nefunguje :(                     #     TODO: remove this
-    '''
-    if hasattr(sessions[user_session_id], "admin"):
-      # and if admin is not equal 1, you re not an admin
-      if sessions[user_session_id]["admin"] != "1":
-        return redirect("/forum")
-    '''
-    '''
-    # if not logged in
-    if user_session_id not in sessions:
-      return redirect("/login")
-    '''                                                 #   TODO: remove !!!
+
     user = sessions[user_session_id]
     # return dict(user=user)
     result = show_all()
@@ -334,7 +278,7 @@ def forum():
 ######   all database items api service   ######
 @get('/forumapi')
 def forumapi():
-    # return { "output" : show_all() }  # wont take date      #   TODO: remove !!!
+    
     return str(show_all())
 
 
@@ -345,9 +289,7 @@ def new_item(no):
       
       new_title = request.GET.title.strip()
       new_body = request.GET.body.strip()
-      # new_title = request.GET.get("title", 1)             #   TODO: remove !!!
-      # new_body = request.GET.get("body", 1)               #   TODO: remove !!!
-      
+
       add_user_id = no                        #   TODO: 001 zapise ako 1...
       ########  last post's id + 1 #####
       posts_list = show_all()
@@ -393,21 +335,11 @@ def edit_item(no):
 # @route('/del_post/<no:int>', method='GET')
 @route('/del_post/<no:int>', method='GET')
 def del_post(no):
-    '''                                           #   TODO: remove !!!
-    if request.GET.save:
-    '''    
-        # del_id = request.GET.get("id", 1)       #   TODO: remove !!!
-        
+    
     delete_by_id(no)
     return redirect('/admin')
     # return '<p>Congrats, you just deleted post of ID %s</p>' % no
-    '''                                                                          #   TODO: remove !!!
-    else:
-        
-        cur_data = show_by_id(no)
 
-        return template('del_post', old=cur_data, no=no)
-    '''                                                                                           #   TODO: remove !!!
 #############  deleting all posts #############
 
 @route('/del_all')
@@ -430,8 +362,4 @@ def mistake403(code):
 def mistake404(code):
     return 'Sorry, this page does not exist!'
 
-
-# debug                                                     #   TODO: remove !!!
-debug(True)
-# debug remove!!!
 run(port=8080, host='127.0.0.1', reloader=True)
